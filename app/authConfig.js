@@ -24,10 +24,12 @@ const b2cPolicies = {
         knownAuthority: b2cTenantName + ".b2clogin.com", 
         signUpSignIn: {
             authority: b2cAuthorityUrl + "/" + b2cSigninPolicy,
-        },
+        }, 
+        /*
         forgotPassword: {
           b2cAuthorityUrl: + "/" + b2cPasswordResetPolocy,
         },
+        */
     },
 }
 
