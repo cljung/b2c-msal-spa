@@ -2,11 +2,12 @@
 // For a full list of msal.js configuration parameters, 
 // visit https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
 
-const b2cLoginHintUser = "aice@contoso.com"; // this will save you time typing it in all the time when testing
+const b2cLoginHintUser = "alice@contoso.com"; // this will save you time typing it in all the time when testing
 
 const b2cTenantName = "yourtenant";
 const b2cTenantNameLong = b2cTenantName + ".onmicrosoft.com";
 const b2cClientId = "..guid for your B2C registered application...";
+const b2cApiClientId = "...guid of the B2C-API AppId you registered above...";
 const b2cSigninPolicy = "B2C_1_susi"; 
 
 const b2cRedirectUri =  "http://localhost:3000";
@@ -14,6 +15,8 @@ const b2cRedirectUri =  "http://localhost:3000";
 const b2cScopes = {
     DemoRead: "https://" + b2cTenantNameLong + "/" + b2cClientId + "/Demo.Read", 
     DemoWrite: "https://" + b2cTenantNameLong + "/" + b2cClientId + "/Demo.Write", 
+    ApiRead: "https://" + b2cTenantNameLong + "/" + b2cApiClientId + "/api.read", 
+    ApiWrite: "https://" + b2cTenantNameLong + "/" + b2cApiClientId + "/api.write" 
   }
     
 // you shouldn't need to change anything below here just to get the sample running with your tenant  
@@ -91,3 +94,14 @@ const tokenRequestDemoWrite = {
     loginHint: b2cLoginHintUser
   };
 
+  const tokenRequestApiRead = {
+    authority: b2cPolicies.authorities.signUpSignIn.authority,
+    scopes: [ b2cScopes.ApiRead ],
+    loginHint: b2cLoginHintUser
+  };
+
+  const tokenRequestApiWrite = {
+    authority: b2cPolicies.authorities.signUpSignIn.authority,
+    scopes: [ b2cScopes.ApiWrite ],
+    loginHint: b2cLoginHintUser
+  };

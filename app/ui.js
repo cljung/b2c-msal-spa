@@ -116,4 +116,3 @@ function getUserName() {
     }
     return userid;
 }
-
