@@ -5,6 +5,11 @@ const myMSALObj = new msal.PublicClientApplication(msalConfig);
 let accessToken;
 let username = "";
 
+// MSAL subtracts this from the token exp claim to make sure to not try and use an
+// access token when there is 1 second left, because when hitting the WebApp it has expired.
+// Since we use a 5 min token ttl for test, we want this to be 0
+myMSALObj.config.system.tokenRenewalOffsetSeconds = 0; 
+
 // Redirect: once login is successful and redirects with tokens, call Graph API
 myMSALObj.handleRedirectPromise().then(handleResponse).catch(err => {
     console.error(err);
@@ -71,7 +76,7 @@ function getTokenSilentTest( request, callback) {
     console.log('getTokenSilentTest');
     request.account = msalGetAccount();
     console.log(request);
-    return myMSALObj.acquireTokenSilent( request)
+    return myMSALObj.acquireTokenSilent( request )
         .then((response) => {
             //console.log(response);
             if (response.accessToken) {
