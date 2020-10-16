@@ -23,7 +23,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 ## Setup in the Azure AD B2C portal
 
 ### Register an API
-1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) im your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost` as the redirectUri (it is not going to be used).
+1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) in your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost` as the redirectUri (it is not going to be used).
 2. Under ***Expose an API***, add two scopes where one is named ***Api.Read*** and the other ***Api.Write***
 
 ### Register an Application
