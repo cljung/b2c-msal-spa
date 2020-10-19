@@ -80,6 +80,7 @@ const msalConfig = {
 
 const loginRequest = {
     authority: b2cPolicies.authorities.signUpSignIn.authority,
+    scopes: [ b2cScopes.DemoRead ],
     loginHint: b2cLoginHintUser
   };  
   
