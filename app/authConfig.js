@@ -11,6 +11,7 @@ const b2cApiClientId = "...guid of the B2C-API AppId you registered above...";
 const b2cSigninPolicy = "B2C_1_susi"; 
 
 const b2cRedirectUri =  "http://localhost:3000";
+const b2cApiUrl =  "http://localhost:5000";
 
 const b2cScopes = {
     DemoRead: "https://" + b2cTenantNameLong + "/" + b2cClientId + "/Demo.Read", 
