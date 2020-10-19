@@ -23,7 +23,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 ## Setup in the Azure AD B2C portal
 
 ### Register an API
-1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) in your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost` as the redirectUri (it is not going to be used).
+1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) in your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost:5000` as the redirectUri (it is not going to be used).
 2. Under ***Expose an API***, add two scopes where one is named ***Api.Read*** and the other ***Api.Write***
 
 ### Register an Application
@@ -40,7 +40,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 6. Goto ***Page Layouts*** for your UserFlow, change the Page Layout version to 1.2.0 (or higher if exist) and Save
 7. (Optional) Goto ***Company Branding*** for your B2C tenant and upload a background image and logotype to spiece it up
 
-## Modifying the source code
+## Modifying the source code for the Application
 
 Open the [/app/authConfig.js](./app/authConfig.js) and make the following changes
 
@@ -65,10 +65,30 @@ const b2cScopes = {
 
 On the command line, navigate to the root of the repository, and run `npm install` to install the project dependencies via npm.
 
-## Running the sample
+## Download and modyfy the source code for the API
 
-To start the sample application, navigate to the project folder and run `npm start` or `node server.js`.
-4. Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000).
+The SPA Webapp is desiged to acquire scopes and call a REST API. You can easily download and launch that REST API using one of the standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). Git clone or download it locally, then open it in a text editor and make the following modifications.
+
+**config.js**
+```javascript
+const clientID = process.env.B2C_clientId || "...guid of the B2C-API AppId you registered above..."; 
+const b2cDomainHost = process.env.B2C_domainHost || "yourtenant.b2clogin.com";
+const tenantIdGuid = process.env.B2C_tenantId || "yourtenant.onmicrosoft.com";
+const policyName = process.env.B2C_policyName || "B2C_1_susi"; 
+```
+
+**index.js** - change scope `demo.read` to `Api.Read` (case sensitive, so match what you used above)
+```javascript
+if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("Api.Read") >= 0) {
+```
+
+**index.js** - copy the entire `app.get("/hello"` hello method and change it to `app.get("/hello-write"` and change the scope to `Api.Write`
+
+## Running the sample
+- Start the sample API, navigate to the project folder and run `node index.js`.
+- Start the sample application, navigate to the project folder and run `node server.js`.
+- Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000).
+
 
 ## Things to play with
 
@@ -85,4 +105,8 @@ If you do F12 in Chrome/Edge you can see the SSO cookie `x-ms-cpim-sso` under Co
 
 * **Acquire API Read Access Silent** will acquire an access token that will be for a different audience and you will see the `aud` guid mathing the `B2C-API`. This is because this access token is intenden for the API (which we never deployed) and any resource validating a JWT token should check to see that the aud claim is for them. 
 
+* **Call API Read** will call the REST API `/hello` method. In the APIs command window, you will see details of the call come through and thatyou are passing scope `Api.Read`.
 
+* **Call API Write** will call the REST API `/hello-write` method. In the APIs command window, you will see details of the call come through and thatyou are passing scope `Api.Write`.
+
+* **Call API Wrong** will call the REST API `/hello-write` method but with the scope `Api.Read` and the call will be rejected.

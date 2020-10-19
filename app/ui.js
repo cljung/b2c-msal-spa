@@ -36,11 +36,13 @@ function displayResponse( innerHtml ) {
     responseElement.innerHTML = innerHtml;
 }
 
+function listTokenCache() {
+    displayResponse( drawTokenTable() );
+}
+
 function updateUIToken(success, scopes, data) {
 
-    var table = "<table class=\"table table-striped\"><thead><th class=\"col-sm-8\">ttl</th><th class=\"col-sm-3\">scopes</th><th class=\"col-sm-3\">aud</th><th class=\"col-sm-3\">acr</th><th class=\"col-sm-3\">link</th></thead>";
-    table += drawTokenTable();
-    table += "</table>";
+    var table = drawTokenTable();
 
     var json = JSON.stringify(data);
     if ( json.substring(0,1)== "{") {
@@ -57,14 +59,8 @@ function updateUIToken(success, scopes, data) {
     }
 }
 
-function listTokenCache() {
-    var table = "<table class=\"table table-striped\"><thead><th class=\"col-sm-3\">scopes/acr</th><th class=\"col-sm-3\">ttl secs</th><th class=\"col-sm-3\">aud</th><th class=\"col-sm-3\">sub</th><th class=\"col-sm-3\">link</th></thead>";
-    table += drawTokenTable();
-    table += "</table>";
-    responseElement.innerHTML = table;
-}
 function drawTokenTable() {
-    var html = "";
+    var html = "<table class=\"table table-striped\"><thead><th class=\"col-sm-3\">scopes/acr</th><th class=\"col-sm-3\">ttl secs</th><th class=\"col-sm-3\">aud</th><th class=\"col-sm-3\">sub</th><th class=\"col-sm-3\">link</th></thead>";
     for (var i = 0; i < myMSALObj.browserStorage.windowStorage.length; i++) {
         var key = myMSALObj.browserStorage.windowStorage.key(i);
         try {
@@ -100,6 +96,7 @@ function drawTokenTable() {
             }
             } catch(err) {}
     }
+    html += "</table>";
     return html;
 }
 
@@ -116,3 +113,38 @@ function getUserName() {
     }
     return userid;
 }
+
+function updateUIAPI(data, endpoint) {
+    console.log(endpoint + ' REST API responded at: ' + new Date().toString());
+    console.log( data );
+    var table = drawTokenTable();
+    responseElement.innerHTML = JSON.stringify(data) + "<br/><br/>" + table;
+}
+
+function callAPIRead() {
+    InvokeRestApi( b2cApiUrl + "/hello", b2cScopes.ApiRead, InvokeRestApiWithAccessToken  );    
+}
+function callAPIWrite() {
+    InvokeRestApi( b2cApiUrl + "/hello-write", b2cScopes.ApiWrite, InvokeRestApiWithAccessToken );    
+}
+// call write API with read scope
+function callAPIWrong() {
+    InvokeRestApi( b2cApiUrl + "/hello-write", b2cScopes.ApiRead, InvokeRestApiWithAccessToken );    
+}
+
+function InvokeRestApiWithAccessToken( endpoint, token ) {
+    const headers = new Headers();
+    const bearer = `Bearer ${token}`;
+    headers.append("Authorization", bearer);
+    const options = {
+        method: "GET",
+        headers: headers
+    };
+    console.log( endpoint + ' at: ' + new Date().toString() );
+    console.log( bearer );
+    fetch(endpoint, options)
+        .then(response => response.json())
+        .then(response => updateUIAPI(response, endpoint))
+        .catch(error => console.log(error));
+}
+

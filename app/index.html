@@ -7,11 +7,18 @@
     <link rel="SHORTCUT ICON" href="./favicon.svg" type="image/x-icon">
     
     <!-- msal.min.js can be used in the place of msal.js; included msal.js to make debug easy -->
+    <!-- 
+    <script type="text/javascript" src="./msal-browser.js"></script>
+    <-->
+    <!-- -->
     <script src="https://alcdn.msauth.net/browser/2.1.0/js/msal-browser.js" integrity="sha384-M9bRB06LdiYadS+F9rPQnntFCYR3UJvtb2Vr4Tmhw9WBwWUfxH8VDRAFKNn3VTc/" crossorigin="anonymous"></script>
+    <!-- -->
     <!-- msal.js with a fallback to backup CDN -->
+    <!-- -->
     <script type="text/javascript">
       if(typeof Msal === 'undefined')document.write(unescape("%3Cscript src='https://alcdn.msftauth.net/browser/2.1.0/js/msal-browser.js' type='text/javascript' crossorigin='anonymous' %3E%3C/script%3E"));
     </script>
+    <!-- -->
     <!-- adding Bootstrap 4 for UI components  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="SHORTCUT ICON" href="https://c.s-microsoft.com/favicon.ico?v2" type="image/x-icon">
@@ -57,6 +64,14 @@
         <button class="btn btn-primary" id="getApiReadSilent" onclick="acquireApiReadTokenSilent()">Acquire API Read Access Silent</button>
         &nbsp;
         <button class="btn btn-primary" id="getApiReadRedirect" onclick="acquireApiReadToken()">Acquire API Read Access Redirect</button>
+        <br>
+        <br>
+        <button class="btn btn-primary" id="callAPIRead" onclick="callAPIRead()">Call API Read</button>
+        &nbsp;
+        <button class="btn btn-primary" id="callAPIWrite" onclick="callAPIWrite()">Call API Write</button>
+        &nbsp;
+        <button class="btn btn-primary" id="callAPIWrong" onclick="callAPIWrong()">Call API Wrong</button>
+
         <hr/>
           <div id="profile-div">
             <p id="idResponse" style="text-align:left!important;" />

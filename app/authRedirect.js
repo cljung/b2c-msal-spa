@@ -94,7 +94,7 @@ function getTokenSilentTest( request, callback) {
         });
 }
 
-function getTokenRedirectEndpoint( request, callback) {
+function getTokenRedirectEndpoint( request, callback ) {
     console.log('getTokenRedirectEndpoint');
     request.account = msalGetAccount();
     console.log(request);
@@ -104,18 +104,63 @@ function getTokenRedirectEndpoint( request, callback) {
             if (response.accessToken) {
                 console.log('access_token acquired at: ' + new Date().toString());
                 accessToken = response.accessToken;
+                callback( true, JSON.stringify( request), response );
+            } else {
+                callback( false, JSON.stringify( request), "ok response but no access token" );
             }
         })
         .catch(error => {
             console.warn("silent token acquisition fails. acquiring token using redirect");
             // fallback to interaction when silent call fails
-            return myMSALObj.acquireTokenRedirect(request);
+            return myMSALObj.acquireTokenRedirect(request)
+                        .then((response) => {
+                            //console.log(response);
+                            if (response.accessToken) {
+                                console.log('access_token acquired at: ' + new Date().toString());
+                                accessToken = response.accessToken;
+                                callback( true, JSON.stringify( request), response );
+                            } else {
+                                callback( false, JSON.stringify( request), "ok response but no access token" );
+                            }
+                        });    
+        });
+}
+
+function InvokeRestApi( apiEndpoint, apiScopes, restApiCallback ) {
+    console.log('InvokeRestApi');
+    var request = {
+        authority: b2cPolicies.authorities.signUpSignIn.authority,
+        scopes: [ apiScopes ]
+    };
+    request.account = msalGetAccount();
+    console.log(request);
+    return myMSALObj.acquireTokenSilent(request)
+        .then((response) => {
+            //console.log(response);
+            if (response.accessToken) {
+                console.log('access_token acquired at: ' + new Date().toString());
+                accessToken = response.accessToken;
+                restApiCallback(apiEndpoint, response.accessToken );
+            }
+        })
+        .catch(error => {
+            console.warn("silent token acquisition fails. acquiring token using redirect");
+            // fallback to interaction when silent call fails
+            return myMSALObj.acquireTokenRedirect(request)
+                    .then((response) => {
+                        //console.log(response);
+                        if (response.accessToken) {
+                            console.log('access_token acquired at: ' + new Date().toString());
+                            accessToken = response.accessToken;
+                            restApiCallback(apiEndpoint, response.accessToken );
+                        }
+                    });    
         });
 }
 
 function acquireReadToken() {
     console.log('acquireReadToken');
-    getTokenRedirectEndpoint( tokenRequestDemoRead, updateUIToken);
+    getTokenRedirectEndpoint( tokenRequestDemoRead, updateUIToken );
 }
 function acquireReadTokenSilent() {
     console.log('acquireReadTokenSilent');
@@ -124,10 +169,28 @@ function acquireReadTokenSilent() {
 
 function acquireWriteToken() {
     console.log('acquireWriteToken');
-    getTokenRedirectEndpoint( tokenRequestDemoWrite, updateUIToken);
+    getTokenRedirectEndpoint( tokenRequestDemoWrite, updateUIToken );
 }
 function acquireWriteTokenSilent() {
     console.log('acquireWriteTokenSilent');
     getTokenSilentTest( tokenRequestDemoWrite, updateUIToken )
+}
+
+function acquireApiReadToken() {
+    console.log('acquireApiReadToken');
+    getTokenRedirectEndpoint( tokenRequestApiRead, updateUIToken );
+}
+function acquireApiReadTokenSilent() {
+    console.log('acquireApiReadTokenSilent');
+    getTokenSilentTest( tokenRequestApiRead, updateUIToken )
+}
+
+function acquireApiWriteToken() {
+    console.log('acquireApiWriteToken');
+    getTokenRedirectEndpoint( tokenRequestApiWrite, updateUIToken, null);
+}
+function acquireApiWriteTokenSilent() {
+    console.log('acquireApiWriteTokenSilent');
+    getTokenSilentTest( tokenRequestApiWrite, updateUIToken, null )
 }
 
