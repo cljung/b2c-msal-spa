@@ -54,6 +54,7 @@ const b2cApiClientId = "...guid of the B2C-API AppId you registered above...";
 const b2cSigninPolicy = "B2C_1_susi"; // name of your B2C UserFlow policy
 
 const b2cRedirectUri =  "http://localhost:3000"; // don't need to change this unless you change host:port
+const b2cApiUrl =  "http://localhost:5000";
 
 const b2cScopes = {
     DemoRead: "https://" + b2cTenantNameLong + "/" + b2cClientId + "/demo.read", 
@@ -85,8 +86,8 @@ if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("Api.Read") 
 **index.js** - copy the entire `app.get("/hello"` hello method and change it to `app.get("/hello-write"` and change the scope to `Api.Write`
 
 ## Running the sample
-- Start the sample API, navigate to the project folder and run `node index.js`.
-- Start the sample application, navigate to the project folder and run `node server.js`.
+- Start the sample API, navigate to the project folder and run `npm install` and then `node index.js`.
+- Start the sample application, navigate to the project folder and run `npm install` and then `node server.js`.
 - Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000).
 
 
