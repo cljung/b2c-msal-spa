@@ -48,7 +48,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 
 ## Modifying the source code for the Application
 
-Open the [/app/authConfig.js](./app/authConfig.js) and make the following changes
+Open the [/spa/app/authConfig.js](/spa/app/authConfig.js) and make the following changes
 
 ```javascript
 const b2cLoginHintUser = "alice@contoso.com"; // this will save you time typing it in all the time when testing
@@ -74,7 +74,9 @@ On the command line, navigate to the root of the repository, and run `npm instal
 
 ## Download and modify the source code for the API
 
-The SPA Webapp is desiged to acquire scopes and call a REST API. The sample API is in the [api folder](/api). That code is derived from the  standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). Make the following modifications.
+The SPA Webapp is desiged to acquire scopes and call a REST API. The sample API is in the [api folder](/api). That code is derived from the  standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). 
+
+Open the [/api/config.js](/api/config.js) and make the following changes
 
 **config.js**
 ```javascript
@@ -92,7 +94,7 @@ if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("Api.Read") 
 **index.js** - copy the entire `app.get("/hello"` hello method and change it to `app.get("/hello-write"` and change the scope to `Api.Write`
 
 ## Running the sample
-- Open two command prompts, one in the `spa` folder and one in the `api` folder.
+- Open two command prompts (that has nodejs in the path), one in the `spa` folder and one in the `api` folder. 
 - In the `api` folder, run `npm install` and then `node index.js`.
 - In the `spa` folder, run `npm install` and then `node server.js`.
 - Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000) to start the SPA webapp.
