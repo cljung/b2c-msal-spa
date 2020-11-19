@@ -7,14 +7,19 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 
 | File/folder       | Description                                |
 |-------------------|--------------------------------------------|
-| `app`             | Contains sample source files               |
-| `authRedirect.js` | Authentication with redirect flow.   |
-| `authConfig.js`   | Contains configuration parameters for the sample. |
-| `ui.js`           | Contains UI logic.                         |
-| `index.html`      | Contains the UI of the sample.            |
-| `package.json`    | Package manifest for npm.                   |
 | `README.md`       | This README file.                          |
-| `server.js`       | Implements a simple Node server to serve index.html.  |
+| `spa`             | Contains sample source files for the SPA app              |
+| `spa\package.json`    | Package manifest for npm.                   |
+| `spa\server.js`       | Implements a simple Node server to serve index.html.  |
+| `spa\app`             | Contains sample source files               |
+| `spa\app\authRedirect.js` | Authentication with redirect flow.   |
+| `spa\app\authConfig.js`   | Contains configuration parameters for the sample. |
+| `spa\app\ui.js`           | Contains UI logic.                         |
+| `spa\app\index.html`      | Contains the UI of the sample.            |
+| `api`             | Contains sample source files for the API              |
+| `api\package.json`    | Package manifest for npm.                   |
+| `api\index.js`       | Implements a simple Node server to act as API  |
+| `api\config.js`   | Contains configuration parameters for the sample API. |
 
 ## Prerequisites
 
@@ -30,6 +35,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 1. [Register a new application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-spa) in the [Azure Portal](https://portal.azure.com) im your Azure AD B2C tenant. Give it a name like `B2C-SPA` or similar. Ensure that the application is enabled for the [authorization code flow with PKCE](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow). This will require that you redirect URI configured in the portal is of type `SPA`. Set the redirectUri to `http://localhost:3000`
 2. Under ***Expose an API***, add two scopes where one is named ***Demo.Read*** and the other ***Demo.Write***
 3. Under ***API Permissions***, add permissions from ***My APIs*** and add Demo.Read and Demo.Write as ***Delegated*** permissions. Also, add ***Api.Read*** and ***Api.Write*** from the registration you made for `B2C-API`. Make sure you perform ***Grant admin consent*** in the portal 
+4. Under ***Manifest***, make sure that `accessTokenAcceptedVersion` has a value of `2` and not `null` and also make sure that `signInAudience` (at the bottom) has a value of `AzureADandPersonalMicrosoftAccount`. Save the Manifest if you made changes.
 
 ### Create a B2C UserFlow
 1. In Azure AD B2C panel in portal.azure.com, go to ***User flows*** under Policies
@@ -68,7 +74,7 @@ On the command line, navigate to the root of the repository, and run `npm instal
 
 ## Download and modify the source code for the API
 
-The SPA Webapp is desiged to acquire scopes and call a REST API. You can easily download and launch that REST API using one of the standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). Git clone or download it locally, then open it in a text editor and make the following modifications.
+The SPA Webapp is desiged to acquire scopes and call a REST API. The sample API is in the [api folder](/api). That code is derived from the  standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). Make the following modifications.
 
 **config.js**
 ```javascript
@@ -86,10 +92,10 @@ if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("Api.Read") 
 **index.js** - copy the entire `app.get("/hello"` hello method and change it to `app.get("/hello-write"` and change the scope to `Api.Write`
 
 ## Running the sample
-- Start the sample API, navigate to the project folder and run `npm install` and then `node index.js`.
-- Start the sample application, navigate to the project folder and run `npm install` and then `node server.js`.
-- Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000).
-
+- Open two command prompts, one in the `spa` folder and one in the `api` folder.
+- In the `api` folder, run `npm install` and then `node index.js`.
+- In the `spa` folder, run `npm install` and then `node server.js`.
+- Finally, open a browser and navigate to [http://localhost:3000](http://localhost:3000) to start the SPA webapp.
 
 ## Things to play with
 
