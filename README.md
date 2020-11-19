@@ -66,7 +66,7 @@ const b2cScopes = {
 
 On the command line, navigate to the root of the repository, and run `npm install` to install the project dependencies via npm.
 
-## Download and modyfy the source code for the API
+## Download and modify the source code for the API
 
 The SPA Webapp is desiged to acquire scopes and call a REST API. You can easily download and launch that REST API using one of the standard Azure samples [https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi). Git clone or download it locally, then open it in a text editor and make the following modifications.
 
