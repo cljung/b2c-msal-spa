@@ -23,11 +23,11 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 ## Setup in the Azure AD B2C portal
 
 ### Register an API
-1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) in your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost:5000` as the redirectUri (it is not going to be used).
+1. [Register a new API](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applications) in the [Azure Portal](https://portal.azure.com) in your Azure AD B2C tenant. Give it a name like `B2C-API` or similar and choose `Web` as the redirect URI method and `http://localhost:5000` as the redirectUri (it is not going to be used).
 2. Under ***Expose an API***, add two scopes where one is named ***Api.Read*** and the other ***Api.Write***
 
 ### Register an Application
-1. [Register a new application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applicationn) in the [Azure Portal](https://portal.azure.com) im your Azure AD B2C tenant. Give it a name like `B2C-SPA` or similar. Ensure that the application is enabled for the [authorization code flow with PKCE](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow). This will require that you redirect URI configured in the portal is of type `SPA`. Set the redirectUri to `http://localhost:3000`
+1. [Register a new application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-spa) in the [Azure Portal](https://portal.azure.com) im your Azure AD B2C tenant. Give it a name like `B2C-SPA` or similar. Ensure that the application is enabled for the [authorization code flow with PKCE](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow). This will require that you redirect URI configured in the portal is of type `SPA`. Set the redirectUri to `http://localhost:3000`
 2. Under ***Expose an API***, add two scopes where one is named ***Demo.Read*** and the other ***Demo.Write***
 3. Under ***API Permissions***, add permissions from ***My APIs*** and add Demo.Read and Demo.Write as ***Delegated*** permissions. Also, add ***Api.Read*** and ***Api.Write*** from the registration you made for `B2C-API`. Make sure you perform ***Grant admin consent*** in the portal 
 
