@@ -9,24 +9,6 @@ var passport = require("passport");
 const config = require('./config');
 var BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
-// TODO: Update the first 3 variables
-/*
-var clientID = process.env.B2C_clientId || "94e08f79-4a04-444c-bda6-7aeef012dde7"; // "d636beb4-e0c5-4c5e-9bb0-d2fd4e1f9525";
-var b2cDomainHost = process.env.B2C_domainHost || "cljungdemob2c.b2clogin.com";
-var tenantIdGuid = process.env.B2C_tenantId || "b6c11183-fc66-4937-86fe-98a7af31a023";
-var policyName = process.env.B2C_policyName || "B2C_1A_UX_signup_signin"; 
-var options = {
-    identityMetadata: "https://" + b2cDomainHost + "/" + tenantIdGuid + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
-
-    clientID: clientID,
-    policyName: policyName,
-    isB2C: true,
-    validateIssuer: false,
-    loggingLevel: 'info',
-    loggingNoPII: false,
-    passReqToCallback: false
-};
-*/
 var bearerStrategy = new BearerStrategy(config,
     function (token, done) {
         // Send user info using the second argument

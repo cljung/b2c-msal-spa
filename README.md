@@ -12,7 +12,7 @@ This simple SPA app is cloned from [https://github.com/Azure-Samples/ms-identity
 | `spa\package.json`    | Package manifest for npm.                   |
 | `spa\server.js`       | Implements a simple Node server to serve index.html.  |
 | `spa\app`             | Contains sample source files               |
-| `spa\app\authRedirect.js` | Authentication with redirect flow.   |
+| `spa\app\authCommon.js` | Authentication with redirect or popup flow.   |
 | `spa\app\authConfig.js`   | Contains configuration parameters for the sample. |
 | `spa\app\ui.js`           | Contains UI logic.                         |
 | `spa\app\index.html`      | Contains the UI of the sample.            |
@@ -105,8 +105,6 @@ if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("Api.Read") 
 If you do F12 in Chrome/Edge you can see the SSO cookie `x-ms-cpim-sso` under Cookies in the Application tab and you can see the id token in the session storage.
 
 * **List Token Cache** Will list what you have in the MSAL token cache in Session Storage and the time-to-live for the acquired tokens.  
-
-* **Acquire Read Access Silent** will acquire an access token with `scope` Demo.Read. When an existing access token with TTL that is negative, you have a token that is expired. Clicking on `Acquire Token Silent` will give you another one using the refresh token. In the network dev tools window, you can see that MSAL makes a call to the token endpoint with grant_type=refresh_token to acquire a new and valid access token.
 
 * If you delete the SSO cookie x-ms-cpim-sso in Session Storage, delete the refresh token i Session Storage, then wait for the access token to expire, you will see that if fails values for Acquire token silent because you have no refresh token and no SSO session. You must now use the Redirect method.
 
