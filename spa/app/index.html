@@ -24,6 +24,7 @@
     <link rel="SHORTCUT ICON" href="https://c.s-microsoft.com/favicon.ico?v2" type="image/x-icon">
     <style>
       th { width:20%!important;}
+      .b2c-iframe { border-width: 0px }
     </style>
   </head>
   <body>
@@ -36,6 +37,7 @@
           <select id="idAuthMethod" onchange="setAuthMethod('idAuthMethod')">
             <option value="redirect">Redirect</option>
             <option value="popup">Popup</option>
+            <option value="iframe">IFrame</option>
         </select>
       </div>
     </nav>
@@ -48,37 +50,28 @@
       <div class="card-body">
         <h5 class="card-title" id="WelcomeMessage">Please sign-in to Azure AD B2C</h5>
         <br>
-        <button class="btn btn-primary" id="listTokens" onclick="listTokenCache()">List Token Cache</button>
-        &nbsp;
-        <button class="btn btn-primary" id="openWellKnown" onclick="openWellKnown()">Well-Known metadata</button>
-        <!--
-        <br>
-        <br>
-        <button class="btn btn-primary" id="getReadSilent" onclick="acquireReadTokenSilent()">Acquire Read Access Silent</button>
-        &nbsp;
-        <button class="btn btn-primary" id="getReadRedirect" onclick="acquireReadToken()">Acquire Read Access Redirect</button>
-        -->
-        <!--
-        <br>
-        <br>
-        <button class="btn btn-primary" id="getWriteSilent" onclick="acquireWriteTokenSilent()">Acquire Write Access Silent</button>
-        &nbsp;
-        <button class="btn btn-primary" id="getWriteRedirect" onclick="acquireWriteToken()">Acquire Write Access Redirect</button>
-        -->
-        <br>
-        <br>
-        <button class="btn btn-primary" id="getApiReadSilent" onclick="acquireApiReadTokenSilent()">Acquire API Read Access Silent</button>
-        &nbsp;
-        <button class="btn btn-primary" id="getApiReadRedirect" onclick="acquireApiReadToken()">Acquire API Read Access Redirect</button>
-        <br>
-        <br>
-        <button class="btn btn-primary" id="callAPIRead" onclick="callAPIRead()">Call API Read</button>
-        &nbsp;
-        <button class="btn btn-primary" id="callAPIWrite" onclick="callAPIWrite()">Call API Write</button>
-        &nbsp;
-        <button class="btn btn-primary" id="callAPIWrong" onclick="callAPIWrong()">Call API Wrong</button>
+          <button class="btn btn-primary" id="listTokens" onclick="listTokenCache()">List Token Cache</button>
+          &nbsp;
+          <button class="btn btn-primary" id="openWellKnown" onclick="openWellKnown()">Well-Known metadata</button>
+          <br>
+          <br>
+          <button class="btn btn-primary" id="getApiReadSilent" onclick="acquireApiReadTokenSilent()">Acquire API Read Access Silent</button>
+          &nbsp;
+          <button class="btn btn-primary" id="getApiReadRedirect" onclick="acquireApiReadToken()">Acquire API Read Access Redirect</button>
+          <br>
+          <br>
+          <button class="btn btn-primary" id="callAPIRead" onclick="callAPIRead()">Call API Read</button>
+          &nbsp;
+          <button class="btn btn-primary" id="callAPIWrite" onclick="callAPIWrite()">Call API Write</button>
+          &nbsp;
+          <button class="btn btn-primary" id="callAPIWrong" onclick="callAPIWrong()">Call API Wrong</button>
 
-        <hr/>
+          <hr/>
+
+          <div id="b2clogin" style="display:none; position:fixed; top:150px; right:0px; z-index:1000;">
+            <iframe class="b2c-iframe" name="b2clogin" id="b2clogin-iframe" src="" height="300" width="400" title="Iframe Example"></iframe>
+          </div>
+
           <div id="profile-div">
             <p id="idResponse" style="text-align:left!important;" />
           </div>
@@ -107,6 +100,16 @@
     <!-- importing app scripts (load order is important) -->
     <script type="text/javascript" src="./authConfig.js"></script>
     <script type="text/javascript" src="./ui.js"></script>   
+    <!--<script type="text/javascript" src="./authRedirect.js"></script>-->
     <script type="text/javascript" src="./authCommon.js"></script>
+    <script>
+    // message from iframe
+    window.onmessage = function(e){
+      if (e.data.startsWith('id_token=')) {
+        var id_token = e.data.split("=")[1];
+        HandleSignInIFrame( id_token );
+      }
+    };
+    </script>
   </body>
 </html>

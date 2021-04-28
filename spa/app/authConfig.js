@@ -6,9 +6,11 @@ const b2cLoginHintUser = "alice@contoso.com"; // this will save you time typing 
 
 const b2cTenantName = "yourtenant";
 const b2cTenantNameLong = b2cTenantName + ".onmicrosoft.com";
-const b2cClientId = "..guid for your B2C registered application...";
+const b2cClientId = "..guid for your B2C registered application that is a SPA app...";
+const b2cClientIdWeb = "..guid for your B2C registered application that is a Web app..."; // this is for the redirect as is it not a SPA app
 const b2cApiClientId = "...guid of the B2C-API AppId you registered above...";
 const b2cSigninPolicy = "B2C_1_susi"; 
+const b2cSigninPolicyIFrame = "B2C_1A_UX_signin_simple"; // if it is different than the above
 
 const b2cRedirectUri =  "http://localhost:3000";
 const b2cApiUrl =  "http://localhost:5000";
@@ -106,4 +108,14 @@ const tokenRequestDemoWrite = {
     authority: b2cPolicies.authorities.signUpSignIn.authority,
     scopes: [ b2cScopes.ApiWrite ],
     loginHint: b2cLoginHintUser
+  };
+
+  const ApiReadRequest = {
+    authority: b2cPolicies.authorities.signUpSignIn.authority,
+    scopes: [ b2cScopes.ApiRead ], 
+  };
+
+  const ApiWriteRequest = {
+    authority: b2cPolicies.authorities.signUpSignIn.authority,
+    scopes: [ b2cScopes.ApiRead ], 
   };

@@ -5,9 +5,15 @@ const myMSALObj = new msal.PublicClientApplication(msalConfig);
 let accessToken;
 let username = "";
 
-var b2cAuthUXStyle = "redirect"; // "redirect"
+var b2cAuthUXStyle = "redirect"; // "popup" // "iframe"
 function isRedirect() {
     return b2cAuthUXStyle == "redirect";
+}
+function isPopup() {
+    return b2cAuthUXStyle == "popup";
+}
+function isIFrame() {
+    return b2cAuthUXStyle == "iframe";
 }
 
 function setAuthMethod(idAuthMethod) {
@@ -62,13 +68,32 @@ function handlePopupResponse(response) {
   
 
 function signIn() {
-    if ( isRedirect() ) {
+    if ( isIFrame() ) {
+        // TODO - fix redirect_uri
+        var b2curl = `https://${b2cHostName}/${b2cTenantNameLong}/${b2cSigninPolicyIFrame}/oauth2/v2.0/authorize?client_id=${b2cClientIdWeb}&nonce=cbafc39f-bc96-45f5-a7d7-7dc52c97f926&redirect_uri=https%3A%2F%2Fdev.fawltytowers2.com%2Fspa%2Fredirect.html&scope=openid&response_type=id_token&disable_cache=true`;
+        hideShowIframe( true, b2curl );
+    } else if ( isRedirect() ) {
         myMSALObj.loginRedirect(loginRequest);
     } else {
         myMSALObj.loginPopup(loginRequest).then(handlePopupResponse).catch(error => {
             console.error(error);
         });
     }
+}
+
+function HandleSignInIFrame(id_token) {
+    var idToken = JSON.parse(atob(id_token.split(".")[1]));
+    var cacheEntry = {
+        credentialType:"IdToken",
+        homeAccountId: idToken.sub + "-" + idToken.acr + "." + idToken.tid,
+        environment: b2cTenantNameLong,
+        client: idToken.aud,
+        secret: id_token
+    }
+    var key = cacheEntry.homeAccountId + "-" + cacheEntry.environment + "-idtoken-" + idToken.aud + "--"
+    myMSALObj.browserStorage.windowStorage.setItem(key, JSON.stringify(cacheEntry));
+    //var account = { username: idToken.name }
+    showWelcomeMessage( { username: idToken.name } );
 }
 
 function signOut() {

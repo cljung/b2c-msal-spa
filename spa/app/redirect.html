@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Successful authentication</title>
+    <!--
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        -->
+  </head>
+  <body>  
+    <script>
+    function parseParms(str) {
+        var pieces = str.split("&"), data = {}, i, parts;
+        // process each query pair
+        for (i = 0; i < pieces.length; i++) {
+            parts = pieces[i].split("=");
+            if (parts.length < 2) {
+                parts.push("");
+            }
+            data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+        }
+        return data;
+    }
+    hash = parseParms(document.location.hash.substring(1))
+    window.top.postMessage('id_token=' + hash.id_token, '*' );
+    </script>
+  </body>
+</html>

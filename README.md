@@ -56,6 +56,7 @@ const b2cLoginHintUser = "alice@contoso.com"; // this will save you time typing 
 const b2cTenantName = "yourtenant";
 const b2cTenantNameLong = b2cTenantName + ".onmicrosoft.com";
 const b2cClientId = "...guid of the B2C-SPA AppId you registered above...";
+const b2cClientIdWeb = "..guid for your B2C registered application that is a Web app..."; // this is for the redirect as is it not a SPA app
 const b2cApiClientId = "...guid of the B2C-API AppId you registered above...";
 const b2cSigninPolicy = "B2C_1_susi"; // name of your B2C UserFlow policy
 
@@ -69,6 +70,8 @@ const b2cScopes = {
     ApiWrite: "https://" + b2cTenantNameLong + "/" + b2cApiClientId + "/api.write" 
 }
 ```
+
+The `b2cClientIdWeb` requires an explanation as you need a 2nd AppReg for the app you use as `client_id` when you signin via iframe. The reason for this is that this whole app is a `SPA` app, but what you are running in the iframe needs to be a `Web`  AppReg.
 
 On the command line, navigate to the root of the repository, and run `npm install` to install the project dependencies via npm.
 

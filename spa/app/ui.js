@@ -18,6 +18,15 @@ function openWellKnown() {
     win.focus();
 }
 
+function hideShowIframe(show, b2curl) {
+    if ( show ) {
+        document.getElementById('b2clogin-iframe').src = b2curl;
+        document.getElementById('b2clogin').style.display = "block";
+    } else {
+        document.getElementById('b2clogin-iframe').src = "";
+        document.getElementById('b2clogin').style.display = "display:none";
+    }
+}
 function showWelcomeMessage(account) {
     // Reconfiguring DOM elements
     //cardDiv.style.display = 'initial';
@@ -125,11 +134,22 @@ function callAPIRead() {
     InvokeRestApi( b2cApiUrl + "/hello", b2cScopes.ApiRead, InvokeRestApiWithAccessToken  );    
 }
 function callAPIWrite() {
-    InvokeRestApi( b2cApiUrl + "/hello-write", b2cScopes.ApiWrite, InvokeRestApiWithAccessToken );    
+    InvokeRestApi( b2cApiUrl +  "/hello-write", b2cScopes.ApiWrite, InvokeRestApiWithAccessToken );    
+}
+function callAPIAdminRead() {
+    InvokeRestApi( b2cApiUrl + "/admin/read", b2cScopes.ApiRead, InvokeRestApiWithAccessToken  );    
 }
 // call write API with read scope
 function callAPIWrong() {
     InvokeRestApi( b2cApiUrl + "/hello-write", b2cScopes.ApiRead, InvokeRestApiWithAccessToken );    
+}
+
+function InvokeRestApi( apiEndpoint, apiScopes, restApiCallback ) {
+    if ( b2cAuthUXStyle == "redirect") {
+        InvokeRestApiRedirect( apiEndpoint, apiScopes, restApiCallback );
+    } else {
+        InvokeRestApiPopup( apiEndpoint, apiScopes, restApiCallback );
+    }
 }
 
 function InvokeRestApiWithAccessToken( endpoint, token ) {
